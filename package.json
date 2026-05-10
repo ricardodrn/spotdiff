@@ -23,7 +23,6 @@
   "files": [
     "dist"
   ],
-  "packageManager": "pnpm@10.33.4",
   "scripts": {
     "build": "pnpm run build:esm && pnpm run build:cjs && pnpm run build:types",
     "build:esm": "tsc -p tsconfig.esm.json",
@@ -31,7 +30,8 @@
     "build:types": "tsc -p tsconfig.types.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest --watch",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "pnpm run build && pnpm exec changeset publish"
   },
   "keywords": [
     "diff",
@@ -41,6 +41,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@commitlint/cli": "^21.0.0",
     "@commitlint/config-conventional": "^21.0.0",
     "@types/jest": "^29.5.0",
