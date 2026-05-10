@@ -1,0 +1,63 @@
+{
+  "name": "spotdiff",
+  "version": "1.0.0",
+  "description": "Compare two JS objects, find what changed, patch back, humanize diff",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "build": "pnpm run build:esm && pnpm run build:cjs && pnpm run build:types",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:types": "tsc -p tsconfig.types.json",
+    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest --watch",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "diff",
+    "patch",
+    "object",
+    "compare"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "husky": "^9.1.7",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
+    }
+  }
+}
