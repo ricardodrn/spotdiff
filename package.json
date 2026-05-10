@@ -1,6 +1,6 @@
 {
   "name": "spotdiff",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Compare two JS objects, find what changed, patch back, humanize diff",
   "repository": {
     "type": "git",
@@ -30,8 +30,8 @@
     "build:types": "tsc -p tsconfig.types.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest --watch",
-    "prepare": "husky",
-    "release": "pnpm run build && pnpm exec changeset publish"
+    "prepare": "node --eval \"if(!process.env.CI) require('child_process').execSync('husky', {stdio:'inherit'})\"",
+    "release": "pnpm run build && pnpm exec changeset publish --no-git-checks"
   },
   "keywords": [
     "diff",
