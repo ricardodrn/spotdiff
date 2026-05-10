@@ -31,7 +31,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules pnpm exec jest --watch",
     "prepare": "node --eval \"if(!process.env.CI) require('child_process').execSync('husky', {stdio:'inherit'})\"",
-    "release": "pnpm run build && pnpm exec changeset publish --no-git-checks"
+    "release": "pnpm run build && pnpm exec changeset publish"
   },
   "keywords": [
     "diff",
