@@ -28,6 +28,7 @@ export default {
         'refactor',
         'revert',
         'style',
+        'config'
       ],
     ],
   },

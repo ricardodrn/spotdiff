@@ -2,6 +2,14 @@
   "name": "spotdiff",
   "version": "1.0.0",
   "description": "Compare two JS objects, find what changed, patch back, humanize diff",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ricardodrn/spotdiff"
+  },
+  "homepage": "https://github.com/ricardodrn/spotdiff#readme",
+  "bugs": {
+    "url": "https://github.com/ricardodrn/spotdiff/issues"
+  },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
