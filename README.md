@@ -1,4 +1,6 @@
 # spotdiff
+[![npm](https://img.shields.io/npm/v/spotdiff)](https://www.npmjs.com/package/spotdiff)
+[![Socket Badge](https://badge.socket.dev/npm/package/spotdiff/0.1.0)](https://badge.socket.dev/npm/package/spotdiff/0.1.0)
 
 Compare two JS objects, find what changed, patch back, humanize the diff.
 
