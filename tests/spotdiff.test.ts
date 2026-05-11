@@ -202,6 +202,15 @@ test('circular: throws descriptive error', () => {
   expect(() => spotdiff(a, { x: 1 })).toThrow(/[Cc]ircular/)
 })
 
+test('circular: shared reference (non-circular) does not throw', () => {
+  const shared = { val: 1 }
+  const a = { x: shared, y: shared }
+  const b = { x: { val: 1 }, y: { val: 2 } }
+  expect(() => spotdiff(a, b)).not.toThrow()
+  const changes = spotdiff(a, b)
+  expect(changes).toEqual([{ path: 'y.val', op: 'changed', from: 1, to: 2 }])
+})
+
 // ── Map and Set ───────────────────────────────────────────────────────────
 
 test('Map: treated as opaque (no crash)', () => {
@@ -210,10 +219,24 @@ test('Map: treated as opaque (no crash)', () => {
   expect(() => spotdiff({ m: m1 }, { m: m2 })).not.toThrow()
 })
 
+test('Map: different Maps reported as changed', () => {
+  const changes = spotdiff({ m: new Map([['k', 1]]) }, { m: new Map([['k', 2]]) })
+  expect(changes[0]?.op).toBe('changed')
+})
+
 test('Set: treated as opaque (no crash)', () => {
   const s1 = new Set([1, 2])
   const s2 = new Set([1, 2])
   expect(() => spotdiff({ s: s1 }, { s: s2 })).not.toThrow()
+})
+
+// ── patch: multiple array deletions ──────────────────────────────────────
+
+test('patch: multiple array removals apply without index shift', () => {
+  const v1 = { items: ['a', 'b', 'c'] }
+  const v2 = { items: ['a'] }
+  const changes = spotdiff(v1, v2)
+  expect(patch(v1, changes)).toEqual(v2)
 })
 
 // ── arrays smart mode ─────────────────────────────────────────────────────

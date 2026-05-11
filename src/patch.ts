@@ -100,25 +100,41 @@ export function deletePath(obj: unknown, path: string): void {
   }
 }
 
+function arrayRemoveKey(path: string): { parent: string; index: number } | null {
+  const m = path.match(/^(.*)\[(\d+)\]$/)
+  if (!m) return null
+  return { parent: m[1], index: parseInt(m[2], 10) }
+}
+
 export function patch(obj: unknown, changes: Change[], reverse = false): unknown {
   const cloned = cloneDeep(obj)
 
-  for (const change of changes) {
+  // Array element deletions must be applied highest-index-first to prevent
+  // splice() from shifting subsequent indices in the same array.
+  const sorted = [...changes].sort((ca, cb) => {
+    const aIsDelete = reverse ? ca.op === 'added' : ca.op === 'removed'
+    const bIsDelete = reverse ? cb.op === 'added' : cb.op === 'removed'
+    if (aIsDelete && bIsDelete) {
+      const aArr = arrayRemoveKey(ca.path)
+      const bArr = arrayRemoveKey(cb.path)
+      if (aArr && bArr && aArr.parent === bArr.parent) {
+        return bArr.index - aArr.index
+      }
+    }
+    return 0
+  })
+
+  for (const change of sorted) {
     const { path, op, from, to } = change
 
     if (reverse) {
-      // Invert: added→remove, removed→add, changed→swap from/to
       if (op === 'added') {
         deletePath(cloned, path)
-      } else if (op === 'removed') {
-        setPath(cloned, path, from)
       } else {
         setPath(cloned, path, from)
       }
     } else {
-      if (op === 'added') {
-        setPath(cloned, path, to)
-      } else if (op === 'removed') {
+      if (op === 'removed') {
         deletePath(cloned, path)
       } else {
         setPath(cloned, path, to)
