@@ -1,6 +1,6 @@
 {
   "name": "spotdiff",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Compare two JS objects, find what changed, patch back, humanize diff",
   "repository": {
     "type": "git",
