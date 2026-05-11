@@ -1,7 +1,14 @@
 import type { Op } from './types.js'
 
 export function isObject(val: unknown): val is Record<string, unknown> {
-  return val !== null && typeof val === 'object' && !(val instanceof Date) && !Array.isArray(val)
+  return (
+    val !== null &&
+    typeof val === 'object' &&
+    !(val instanceof Date) &&
+    !(val instanceof Map) &&
+    !(val instanceof Set) &&
+    !Array.isArray(val)
+  )
 }
 
 export function isPrimitive(val: unknown): boolean {
